@@ -1,0 +1,252 @@
+tblAcademicProgressReports
+
+
+0	ReportID	INTEGER	0		1
+1	ChildID	INTEGER	0		0
+2	ChildName	TEXT	0		0
+3	Gender	TEXT	0		0
+4	FatherOrGuardianName	TEXT	0		0
+5	AghoshCenterName	TEXT	0		0
+6	AdministratorName	TEXT	0		0
+7	School	TEXT	0		0
+8	Class	TEXT	0		0
+9	Examination	TEXT	0		0
+10	AcademicYear	TEXT	0		0
+11	TotalMarks	TEXT	0		0
+12	ObtainedMarks	TEXT	0		0
+13	Division	TEXT	0		0
+14	Promoted	TEXT	0		0
+15	Position	TEXT	0		0
+16	ResultImagePath	TEXT	0		0
+17	SessionID	INTEGER	0		0
+
+
+
+
+tblActivities
+
+cid	name	type	notnull	dflt_value	pk
+0	ActivityID	INTEGER	0		1
+1	ActivityName	TEXT	0		0
+2	ActivityDate	TEXT	0		0
+3	Description	TEXT	0		0
+4	OrganizedBy	TEXT	0		0
+5	TotalParticipants	TEXT	0		0
+6	CenterID	INTEGER	0		0
+7	SessionID	INTEGER	0		0
+
+
+
+tblCenters
+
+
+0	CenterID	INTEGER	0		1
+1	CenterName	TEXT	0		0
+2	City	TEXT	0		0
+3	Address	TEXT	0		0
+4	Capacity	INTEGER	0		0
+5	OperationalStatus	TEXT	0		0
+6	Region	TEXT	0		0
+7	AdministratorName	TEXT	0		0
+8	AdminContactNumber	TEXT	0		0
+
+tblChildActivities
+
+
+0	ChildActivityID	INTEGER	0		1
+1	ChildID	INTEGER	0		0
+2	ActivityID	INTEGER	0		0
+3	ParticipationRemarks	TEXT	0		0
+4	AwardReceived	TEXT	0		0
+5	Position	TEXT	0		0
+
+
+tblChildren
+
+
+0	ChildID	INTEGER	0		1
+1	CenterID	INTEGER	0		0
+2	FullName	TEXT	0		0
+3	FatherName	TEXT	0		0
+4	Gender	TEXT	0		0
+5	DateOfBirth	TEXT	0		0
+6	AdmissionDate	TEXT	0		0
+7	RegistrationNumber	TEXT	0		0
+8	SchoolName	TEXT	0		0
+9	Class	TEXT	0		0
+10	Intelligence	TEXT	0		0
+11	Disability	TEXT	0		0
+12	HealthCondition	TEXT	0		0
+13	ReasonFatherDeath	TEXT	0		0
+14	FatherDeathDate	TEXT	0		0
+15	FatherOccupation	TEXT	0		0
+16	FatherDesignation	TEXT	0		0
+17	MotherName	TEXT	0		0
+18	MotherStatus	TEXT	0		0
+19	MotherDeathDate	TEXT	0		0
+20	MotherCNIC	TEXT	0		0
+21	PermanentAddress	TEXT	0		0
+22	TemporaryAddress	TEXT	0		0
+23	Sibling1Name	TEXT	0		0
+24	Sibling1Gender	TEXT	0		0
+25	Sibling1DOB	TEXT	0		0
+26	Sibling2Name	TEXT	0		0
+27	Sibling2Gender	TEXT	0		0
+28	Sibling2DOB	TEXT	0		0
+29	Sibling3Name	TEXT	0		0
+30	Sibling3Gender	TEXT	0		0
+31	Sibling3DOB	TEXT	0		0
+32	Sibling4Name	TEXT	0		0
+33	Sibling4Gender	TEXT	0		0
+34	Sibling4DOB	TEXT	0		0
+35	Sibling5Name	TEXT	0		0
+36	Sibling5Gender	TEXT	0		0
+37	Sibling5DOB	TEXT	0		0
+38	MeetPerson1Name	TEXT	0		0
+39	MeetPerson1CNIC	TEXT	0		0
+40	MeetPerson1Contact	TEXT	0		0
+41	MeetPerson2Name	TEXT	0		0
+42	MeetPerson2CNIC	TEXT	0		0
+43	MeetPerson2Contact	TEXT	0		0
+44	MeetPerson3Name	TEXT	0		0
+45	MeetPerson3CNIC	TEXT	0		0
+46	MeetPerson3Contact	TEXT	0		0
+47	MeetPerson4Name	TEXT	0		0
+48	MeetPerson4CNIC	TEXT	0		0
+49	MeetPerson4Contact	TEXT	0		0
+50	MeetPerson5Name	TEXT	0		0
+51	MeetPerson5CNIC	TEXT	0		0
+52	MeetPerson5Contact	TEXT	0		0
+53	IntroducerName	TEXT	0		0
+54	IntroducerCNIC	TEXT	0		0
+55	IntroducerContact	TEXT	0		0
+56	IntroducerAddress	TEXT	0		0
+57	GuardianName	TEXT	0		0
+58	GuardianRelation	TEXT	0		0
+59	GuardianCNIC	TEXT	0		0
+60	GuardianContact	TEXT	0		0
+61	Guardianaddress	TEXT	0		0
+62	DocSchoolCertificate	TEXT	0		0
+63	DocBForm	TEXT	0		0
+64	DocFatherCNIC	TEXT	0		0
+65	DocMotherCNIC	TEXT	0		0
+66	DocFatherDeathCert	TEXT	0		0
+67	OtherDoc1	TEXT	0		0
+68	OtherDoc2	TEXT	0		0
+69	OtherDoc3	TEXT	0		0
+70	Status	TEXT	0		0
+71	PhotoPath	TEXT	0		0
+72	ChildRequiredAmount	TEXT	0		0
+73	SessionID	INTEGER	0		0
+74	MonthlyAmount	REAL	0	0	0
+
+
+tblCollectors
+
+
+0	CollectorID	INTEGER	0		1
+1	FullName	TEXT	0		0
+2	ContactNumber	TEXT	0		0
+3	Address	TEXT	0		0
+4	CenterID	INTEGER	0		0
+
+
+tblCommitments
+
+
+
+0	CommitmentID	INTEGER	0		1
+1	DonorID	INTEGER	0		0
+2	CommitmentStartDate	TEXT	0		0
+3	CommitmentEndDate	TEXT	0		0
+4	CommitmentAmount	REAL	0		0
+5	MonthlyAmount	REAL	0		0
+6	Notes	TEXT	0		0
+7	IsActive	INTEGER	0	1	0
+
+tblDonations
+
+
+0	DonationID	INTEGER	0		1
+1	DonationType	TEXT	0		0
+2	DonationAmount	REAL	0		0
+3	DonationDate	TEXT	0		0
+4	CenterID	INTEGER	0		0
+5	CollectorID	INTEGER	0		0
+6	DonorID	INTEGER	0		0
+
+
+tblDonors
+
+
+0	DonorID	INTEGER	0		1
+1	FullName	TEXT	0		0
+2	CNIC	TEXT	0		0
+3	Address	TEXT	0		0
+4	ContactNumber	TEXT	0		0
+5	OfficeDonorID	TEXT	0		0
+6	DonationType	TEXT	0		0
+7	CollectorID	INTEGER	0		0
+8	PaymentMethod	TEXT	0		0
+9	Frequency	TEXT	0		0
+10	IsActive	INTEGER	0	1	0
+11	MonthlyCommitment	REAL	0	0	0
+
+
+tblHealth
+
+
+0	HealthID	INTEGER	0		1
+1	ChildID	INTEGER	0		0
+2	CreatedOn	TEXT	0		0
+3	BMI	TEXT	0		0
+4	Height	TEXT	0		0
+5	Weight	TEXT	0		0
+6	PhysicalDiagnosis	TEXT	0		0
+7	VisionRight	TEXT	0		0
+8	VisionLeft	TEXT	0		0
+9	VisionDiagnosis	TEXT	0		0
+10	HearingRight	TEXT	0		0
+11	HearingLeft	TEXT	0		0
+12	HearingDiagnosis	TEXT	0		0
+13	Speech	TEXT	0		0
+14	BloodGroup	TEXT	0		0
+15	ECG	TEXT	0		0
+16	PrescribedMedicine	TEXT	0		0
+17	SpecialTreatment	TEXT	0		0
+18	MedicalOfficerName	TEXT	0		0
+19	MedicalInstitutionName	TEXT	0		0
+
+
+tblSessions
+
+
+0	SessionID	INTEGER	0		1
+1	SessionName	TEXT	0		0
+2	StartDate	TEXT	0		0
+3	EndDate	TEXT	0		0
+4	IsCurrentSession	INTEGER	0	0	0
+
+
+tblSponsorships
+
+
+0	SponsorshipID	INTEGER	0		1
+1	DonorID	INTEGER	0		0
+2	ChildID	INTEGER	0		0
+3	SponsorshipAmount	TEXT	0		0
+4	Percentage	TEXT	0		0
+5	StartDate	TEXT	0		0
+6	EndDate	TEXT	0		0
+7	Notes	TEXT	0		0
+8	IsActive	INTEGER	0	1	0
+9	CommitmentID	INTEGER	0		0
+
+tblUsers
+
+0	UserID	INTEGER	0		1
+1	Username	TEXT	1		0
+2	PasswordHash	TEXT	1		0
+3	Role	TEXT	0	'User'	0
+4	CenterID	INTEGER	0		0
+5	IsLoggedIn	INTEGER	0	0	0

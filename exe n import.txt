@@ -1,0 +1,95 @@
+python migrate.py --server localhost --username sa --password 1234 --sqlite aghosh.db --tables tblCenters
+python migrate.py --server kashifpc --username sa --password "" --sqlite aghosh.db --tables tblCenters
+
+
+python migrate.py --server kashifpc --database Aghosh --username sa --password "" --sqlite aghosh.db
+
+
+pyinstaller --onefile --noconsole ^
+--add-data "logo;logo" ^
+--add-data "Photo;Photo" ^
+--hidden-import=PIL.Image ^
+--hidden-import=PIL.ImageTk ^
+--icon=app.ico ^
+main.py
+
+
+pyinstaller --onefile --noconsole --add-data "logo;logo" --add-data "Photo;Photo" --hidden-import=PIL.Image --hidden-import=PIL.ImageTk --icon=app.ico main.py
+
+pyinstaller --onefile --noconsole ^
+--add-data "logo;logo" ^
+--hidden-import=PIL.Image ^
+--hidden-import=PIL.ImageTk ^
+--icon=app.ico ^
+main.py
+
+
+pyinstaller --onefile --noconsole ^
+--add-data "logo;logo" ^
+--add-data "config;config" ^
+--hidden-import=PIL.Image ^
+--hidden-import=PIL.ImageTk ^
+--icon=app.ico ^
+main.py
+
+final 
+pyinstaller --onefile --noconsole ^
+--add-data "logo;logo" ^
+--hidden-import=PIL.Image ^
+--hidden-import=PIL.ImageTk ^
+--name "AghoshCareSys" ^
+--icon=app.ico ^
+main.py
+
+final...final...final...final...final...
+
+pyinstaller --onefile --noconsole --add-data "logo;logo" --hidden-import=PIL.Image --hidden-import=PIL.ImageTk --name "AghoshCareSys" --icon=app.ico main.py
+
+
+
+https://visual-studio-code.en.uptodown.com/windows/download/78856851
+for old version of vs code
+
+
+..\..\..\..\..\..\..\Aghosh\Photo\Adeeba.png
+
+def load_photo(path):
+        if os.path.exists(path):
+            try:
+                img = Image.open(path)
+                img.thumbnail((150, 150))
+                img_tk = ImageTk.PhotoImage(img)
+                photo_label.configure(image=img_tk, text="", bg="white")
+                photo_label.image = img_tk
+            except:
+                photo_label.configure(text="Image Error", image="", bg="gray")
+        else:
+            photo_label.configure(text="No Image", image="", bg="gray")
+
+    load_photo(photo_path.get())
+
+    '''def browse_photo():
+        file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
+        if file_path:
+            photo_path.delete(0, tk.END)
+            photo_path.insert(0, file_path)
+            load_photo(file_path)'''
+            
+    
+    def browse_photo():
+        #messagebox.showinfo("","")
+        file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
+        if file_path:
+            # Convert to relative path for storage
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            try:
+                relative_path = os.path.relpath(file_path, base_dir)
+                photo_path.delete(0, tk.END)
+                photo_path.insert(0, relative_path)
+            except ValueError:
+                photo_path.delete(0, tk.END)
+                photo_path.insert(0, file_path)
+            
+            load_photo(file_path)  # Load with original absolute path
+    
+    tk.Button(photo_frame, text="Browse Photo", command=browse_photo).pack(pady=5)
