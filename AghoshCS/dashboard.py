@@ -5951,6 +5951,7 @@ def open_sponsorship_mgmt():
             from openpyxl import Workbook
             from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
             from openpyxl.utils import get_column_letter
+            from openpyxl.worksheet.page import PageMargins
 
         except ImportError:
             messagebox.showerror(
@@ -5964,6 +5965,8 @@ def open_sponsorship_mgmt():
         if not sponsored and not unsponsored:
             messagebox.showwarning("No Data", "No children records found.")
             return
+
+        total_children = len(sponsored) + len(unsponsored)
 
         default_name = f"AllChildren_{_dt.date.today().strftime('%Y%m%d')}.xlsx"
 
@@ -5981,6 +5984,29 @@ def open_sponsorship_mgmt():
         ws = wb.active
         ws.title = "All Children"
 
+        # ─────────────────────────────────────────────────────────────
+        # PAGE SETUP — A4 Portrait, Narrow Margins, Fit to Page Width
+        # ─────────────────────────────────────────────────────────────
+        ws.page_setup.orientation = "portrait"
+        ws.page_setup.paperSize = ws.PAPERSIZE_A4
+        ws.page_setup.fitToWidth = 1
+        ws.page_setup.fitToHeight = 0
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+
+        ws.page_margins = PageMargins(
+            left=0.25,
+            right=0.25,
+            top=0.35,
+            bottom=0.35,
+            header=0.15,
+            footer=0.15
+        )
+
+        ws.sheet_view.showGridLines = False
+
+        # ─────────────────────────────────────────────────────────────
+        # STYLES
+        # ─────────────────────────────────────────────────────────────
         thin = Side(style="thin", color="B0BEC5")
         medium = Side(style="medium", color="78909C")
 
@@ -5989,12 +6015,12 @@ def open_sponsorship_mgmt():
         c_align_top = Alignment(horizontal="center", vertical="top")
         l_align_top = Alignment(horizontal="left", vertical="top", wrap_text=True)
 
-        hdr_font = Font(name="Arial", bold=True, color="FFFFFF", size=10)
+        hdr_font = Font(name="Arial", bold=True, color="FFFFFF", size=8)
         hdr_fill_child = PatternFill("solid", start_color="0F2540")
         hdr_fill_donor = PatternFill("solid", start_color="1D6FD8")
         hdr_align = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
-        data_font = Font(name="Arial", size=9)
+        data_font = Font(name="Arial", size=8)
 
         fills_sp = [
             PatternFill("solid", start_color="FFFFFF"),
@@ -6008,100 +6034,311 @@ def open_sponsorship_mgmt():
 
         blank_fill = PatternFill("solid", start_color="FFF3E0")
 
-        COLS = [
-            (1, "S.No", 7, True),
-            (2, "Child ID", 14, True),
-            (3, "Child Name", 26, True),
-            (4, "Age", 7, True),
-            (5, "Class", 12, True),
-            (6, "School", 26, True),
-            (7, "Donor/s", 28, False),
-            (8, "Amount", 12, False),
-            (9, "Start Date", 13, False),
-            (10, "End Date", 13, False),
-            (11, "Notes", 32, False),
-        ]
-
-        N_CHILD_COLS = 6
-        TOTAL_COLS = 11
-
         def _bdr(left=thin, right=thin, top=thin, bottom=thin):
             return Border(left=left, right=right, top=top, bottom=bottom)
 
-        ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=TOTAL_COLS)
-        tc = ws.cell(row=1, column=1, value="Complete Children Sponsorship List")
-        tc.font = Font(name="Arial", bold=True, size=14, color="0F2540")
-        tc.alignment = Alignment(horizontal="center", vertical="center")
-        tc.border = _bdr(left=medium, right=medium, top=medium, bottom=medium)
-        ws.row_dimensions[1].height = 30
+        # ─────────────────────────────────────────────────────────────
+        # COLUMNS
+        #
+        # NEW COLUMN:
+        #   Overall S.No = 1, 2, 3 ... total children
+        #
+        # OLD S.No:
+        #   Kept unchanged.
+        #   Sponsored group starts from 1.
+        #   Unsponsored group starts from 1.
+        # ─────────────────────────────────────────────────────────────
+        COLS = [
+            (1,  "Overall\nS.No",  7,  True),   # New column
+            (2,  "S.No",           6,  True),   # Existing column kept
+            (3,  "Child ID",       11, True),
+            (4,  "Child Name",     18, True),
+            (5,  "Age",            5,  True),
+            (6,  "Class",          8,  True),
+            (7,  "School",         16, True),
+            (8,  "Donor/s",        18, False),
+            (9,  "Amount",         9,  False),
+            (10, "Start Date",     10, False),
+            (11, "End Date",       10, False),
+            (12, "Notes",          18, False),
+        ]
+
+        TOTAL_COLS = 12
+        N_CHILD_COLS = 7
+
+        # ─────────────────────────────────────────────────────────────
+        # TITLE
+        # ─────────────────────────────────────────────────────────────
+        ws.merge_cells(
+            start_row=1,
+            start_column=1,
+            end_row=1,
+            end_column=TOTAL_COLS
+        )
+
+        title_cell = ws.cell(row=1, column=1, value="Complete Children Sponsorship List")
+        title_cell.font = Font(name="Arial", bold=True, size=12, color="0F2540")
+        title_cell.alignment = Alignment(horizontal="center", vertical="center")
+        title_cell.border = _bdr(left=medium, right=medium, top=medium, bottom=medium)
+
+        ws.row_dimensions[1].height = 26
+
+        # ─────────────────────────────────────────────────────────────
+        # SUMMARY ROW
+        # ─────────────────────────────────────────────────────────────
+        ws.merge_cells(
+            start_row=2,
+            start_column=1,
+            end_row=2,
+            end_column=TOTAL_COLS
+        )
+
+        summary_cell = ws.cell(
+            row=2,
+            column=1,
+            value=(
+                f"Total Children: {total_children}   |   "
+                f"Sponsored: {len(sponsored)}   |   "
+                f"Unsponsored: {len(unsponsored)}   |   "
+                f"Report Date: {_dt.date.today().strftime('%d-%m-%Y')}"
+            )
+        )
+        summary_cell.font = Font(name="Arial", bold=True, size=9, color="374151")
+        summary_cell.alignment = Alignment(horizontal="center", vertical="center")
+        summary_cell.fill = PatternFill("solid", start_color="E2E8F0")
+        summary_cell.border = _bdr(left=medium, right=medium, top=thin, bottom=medium)
+
+        ws.row_dimensions[2].height = 20
+
+        # ─────────────────────────────────────────────────────────────
+        # HEADER ROW
+        # ─────────────────────────────────────────────────────────────
+        header_row = 3
 
         for col_num, label, width, is_child in COLS:
             fill = hdr_fill_child if is_child else hdr_fill_donor
-            c = ws.cell(row=2, column=col_num, value=label)
+
+            c = ws.cell(row=header_row, column=col_num, value=label)
             c.font = hdr_font
             c.fill = fill
             c.alignment = hdr_align
-            c.border = _bdr(left=medium, right=medium, top=medium, bottom=medium)
+            c.border = _bdr(
+                left=medium,
+                right=medium,
+                top=medium,
+                bottom=medium
+            )
+
             ws.column_dimensions[get_column_letter(col_num)].width = width
 
-        ws.row_dimensions[2].height = 22
+        ws.row_dimensions[header_row].height = 28
 
-        current_row = 3
+        # ─────────────────────────────────────────────────────────────
+        # LOCAL CHILD BLOCK WRITER
+        # ─────────────────────────────────────────────────────────────
+        def write_child_block(
+            ws,
+            child,
+            start_excel_row,
+            overall_sno,
+            group_sno,
+            extra_blank,
+            grp_idx,
+            fills,
+            blank_donor_fill
+        ):
+            fill = fills[grp_idx % 2]
+            n_existing = len(child["sponsors"])
+            total_rows = n_existing + extra_blank
 
+            r = start_excel_row
+
+            for row_offset in range(total_rows):
+                is_first = row_offset == 0
+                is_last = row_offset == total_rows - 1
+                is_blank = row_offset >= n_existing
+
+                top_side = medium if is_first else thin
+                bottom_side = medium if is_last else thin
+
+                # Columns 1 to 7 = child information
+                child_vals = [
+                    overall_sno if is_first else "",                  # New overall serial
+                    group_sno if is_first else "",                    # Existing S.No unchanged
+                    child["RegistrationNumber"] if is_first else "",
+                    child["ChildName"] if is_first else "",
+                    child["Age"] if is_first else "",
+                    child["Class"] if is_first else "",
+                    child["School"] if is_first else "",
+                ]
+
+                for col_offset, val in enumerate(child_vals):
+                    col_num = col_offset + 1
+
+                    c = ws.cell(row=r, column=col_num, value=val)
+                    c.font = data_font
+                    c.fill = fill
+
+                    if col_num in (1, 2, 3, 5):
+                        c.alignment = c_align_top
+                    else:
+                        c.alignment = l_align_top
+
+                    c.border = _bdr(
+                        left=medium if col_num == 1 else thin,
+                        right=medium if col_num == N_CHILD_COLS else thin,
+                        top=top_side,
+                        bottom=bottom_side,
+                    )
+
+                # Columns 8 to 12 = donor/sponsorship information
+                if is_blank:
+                    donor_vals = ["", "", "", "", ""]
+                    row_fill = blank_donor_fill
+                else:
+                    sp = child["sponsors"][row_offset]
+
+                    donor_vals = [
+                        sp["Donor"],
+                        sp["Amount"],
+                        sp["StartDate"],
+                        sp["EndDate"],
+                        sp["Notes"],
+                    ]
+
+                    row_fill = fill
+
+                for col_offset, val in enumerate(donor_vals):
+                    col_num = N_CHILD_COLS + col_offset + 1
+
+                    c = ws.cell(row=r, column=col_num, value=val)
+                    c.font = data_font
+                    c.fill = row_fill
+
+                    if col_num in (9, 10, 11):
+                        c.alignment = c_align
+                    else:
+                        c.alignment = l_align
+
+                    c.border = _bdr(
+                        left=medium if col_num == N_CHILD_COLS + 1 else thin,
+                        right=medium if col_num == TOTAL_COLS else thin,
+                        top=top_side,
+                        bottom=bottom_side,
+                    )
+
+                    # Amount formatting
+                    if col_num == 9 and val not in ("", None):
+                        try:
+                            c.value = float(val)
+                            c.number_format = '#,##0'
+                        except Exception:
+                            pass
+
+                ws.row_dimensions[r].height = 18
+                r += 1
+
+            # Merge child-info columns vertically if child has multiple donor rows
+            # or blank manual donor rows.
+            if total_rows > 1:
+                last_row = start_excel_row + total_rows - 1
+
+                for col_num in range(1, N_CHILD_COLS + 1):
+                    ws.merge_cells(
+                        start_row=start_excel_row,
+                        start_column=col_num,
+                        end_row=last_row,
+                        end_column=col_num,
+                    )
+
+                    mc = ws.cell(row=start_excel_row, column=col_num)
+                    mc.font = data_font
+                    mc.fill = fill
+
+                    if col_num in (1, 2, 3, 5):
+                        mc.alignment = c_align_top
+                    else:
+                        mc.alignment = l_align_top
+
+                    mc.border = _bdr(
+                        left=medium if col_num == 1 else thin,
+                        right=medium if col_num == N_CHILD_COLS else thin,
+                        top=medium,
+                        bottom=medium,
+                    )
+
+            return r
+
+        # ─────────────────────────────────────────────────────────────
+        # WRITE DATA
+        # ─────────────────────────────────────────────────────────────
+        current_row = 4
+
+        overall_serial = 0
+        sponsored_serial = 0
+        unsponsored_serial = 0
+
+        # Sponsored children first
         if sponsored:
             for grp_idx, child in enumerate(sponsored):
-                current_row = _write_child_block(
-                    ws,
-                    child,
-                    current_row,
-                    grp_idx + 1,
+                overall_serial += 1
+                sponsored_serial += 1
+
+                current_row = write_child_block(
+                    ws=ws,
+                    child=child,
+                    start_excel_row=current_row,
+                    overall_sno=overall_serial,
+                    group_sno=sponsored_serial,
                     extra_blank=1,
                     grp_idx=grp_idx,
                     fills=fills_sp,
-                    data_font=data_font,
-                    thin=thin,
-                    medium=medium,
-                    N_CHILD_COLS=N_CHILD_COLS,
-                    TOTAL_COLS=TOTAL_COLS,
-                    c_align_top=c_align_top,
-                    l_align_top=l_align_top,
-                    c_align=c_align,
-                    l_align=l_align,
-                    blank_donor_fill=blank_fill,
+                    blank_donor_fill=blank_fill
                 )
 
-        ws.row_dimensions[current_row].height = 10
+        # Gap row between sponsored and unsponsored children
+        ws.row_dimensions[current_row].height = 8
         current_row += 1
 
+        # Unsponsored children
         if unsponsored:
             for grp_idx, child in enumerate(unsponsored):
-                current_row = _write_child_block(
-                    ws,
-                    child,
-                    current_row,
-                    grp_idx + 1,
+                overall_serial += 1
+                unsponsored_serial += 1
+
+                current_row = write_child_block(
+                    ws=ws,
+                    child=child,
+                    start_excel_row=current_row,
+                    overall_sno=overall_serial,
+                    group_sno=unsponsored_serial,
                     extra_blank=2,
                     grp_idx=grp_idx,
                     fills=fills_un,
-                    data_font=data_font,
-                    thin=thin,
-                    medium=medium,
-                    N_CHILD_COLS=N_CHILD_COLS,
-                    TOTAL_COLS=TOTAL_COLS,
-                    c_align_top=c_align_top,
-                    l_align_top=l_align_top,
-                    c_align=c_align,
-                    l_align=l_align,
-                    blank_donor_fill=blank_fill,
+                    blank_donor_fill=blank_fill
                 )
 
-        ws.freeze_panes = "A3"
+        # ─────────────────────────────────────────────────────────────
+        # FINAL PRINT / VIEW SETTINGS
+        # ─────────────────────────────────────────────────────────────
+        ws.freeze_panes = "A4"
+
+        ws.print_title_rows = "1:3"
+        ws.print_area = f"A1:{get_column_letter(TOTAL_COLS)}{current_row - 1}"
+
+        ws.auto_filter.ref = f"A3:{get_column_letter(TOTAL_COLS)}{current_row - 1}"
+
+        ws.print_options.horizontalCentered = True
+        ws.print_options.verticalCentered = False
+
+        ws.oddFooter.center.text = "Page &P of &N"
 
         wb.save(filepath)
 
         messagebox.showinfo(
             "Export Successful",
             f"All children list exported.\n\n"
+            f"Total Children: {total_children}\n"
             f"Sponsored:   {len(sponsored)}\n"
             f"Unsponsored: {len(unsponsored)}\n\n"
             f"{filepath}"
