@@ -1,0 +1,73 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+
+# Local/Replit
+.local/
+.replit
+replit.md
+uv.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Build / installers
+*.exe
+*.spec
+*.iss
+*.zip
+*.rar
+Output/
+Output1/
+Output2/
+Output3/
+dist/
+dist1/
+build/
+AghoshCS/AghoshCareSys Installer1/
+
+# Database files
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+
+# Office / reports
+*.xlsx
+*.xls
+*.docx
+*.doc
+*.pdf
+
+# Images, profiles, certificates, fonts
+AghoshCS/Photo/
+AghoshCS/Photo1/
+AghoshCS/Photo empty/
+AghoshCS/Certificates/
+AghoshCS/Profiles for donors/
+AghoshCS/Fonts/
+AghoshCS/logo/
+Aghosh Girsl Profiles/
+All Profiles/
+Only kaam ki files/
+attached_assets/
