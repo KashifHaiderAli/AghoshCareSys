@@ -71,3 +71,16 @@ Aghosh Girsl Profiles/
 All Profiles/
 Only kaam ki files/
 attached_assets/
+# Local notes / schema exports
+*.txt
+
+# Local project files not currently tracked
+AghoshCS/Splash.py
+AghoshCS/app.ico
+AghoshCS/build.bat
+AghoshCS/db_config.txt
+AghoshCS/db_helper.py
+AghoshCS/main.py
+AghoshCS/migrate.py
+AghoshCS/styles.py
+pyproject.toml
